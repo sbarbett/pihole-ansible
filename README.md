@@ -1,6 +1,6 @@
 # 🍓 pihole-ansible
 
-This collection provides Ansible modules and roles for managing PiHole v6 via a custom API client. This collection is built on top of the [piholev6api](https://github.com/sbarbett/piholev6api) Python library, which handles authentication and requests.
+This collection provides Ansible modules and roles for managing PiHole v6 via a custom API client. This collection is built on top of the [pihole6api](https://github.com/sbarbett/pihole6api) Python library, which handles authentication and requests.
 
 ## Overview
 
@@ -22,10 +22,10 @@ In future releases, additional roles and modules will be added to further extend
 - **Ansible:** Version 2.9 or later.
 - **Python:** The control node requires Python 3.x.
 - **piholev6api Library:**  
-  Install the piholev6api library using pip:
+  Install the pihole6api library using pip:
   
   ```bash
-  pip install piholev6api
+  pip install pihole6api
   ```
 
 ### Installation
