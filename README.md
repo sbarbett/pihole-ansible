@@ -77,13 +77,13 @@ deactivate
 If Ansible is installed via `pipx`, inject `pihole6api` into Ansible’s environment:
 
 ```bash
-pipx inject ansible-core pihole6api
+pipx inject ansible pihole6api --include-deps
 ```
 
 Verify installation:
 
 ```bash
-pipx runpip ansible-core show pihole6api
+pipx runpip ansible show pihole6api
 ```
 
 Since Ansible does not automatically detect `pipx` environments, you must explicitly set the Python interpreter in your Ansible configuration:
