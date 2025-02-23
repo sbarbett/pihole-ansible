@@ -44,6 +44,79 @@ ansible-galaxy collection build
 ansible-galaxy collection install sbarbett-pihole-x.x.x.tar.gz
 ```
 
+#### `pihole6api` Dependency
+
+The `pihole6api` library is required for this Ansible collection to function. The installation method depends on how you installed Ansible.
+
+```bash
+pip install pihole6api
+```
+
+However, some Linux distributions (Debian, Ubuntu, Fedora, etc.) **restrict system-wide `pip` installs** due to [PEP 668](https://peps.python.org/pep-0668/). In that case, use one of the methods below.
+
+**Installing in a Virtual Environment (Recommended):**
+
+If you want an isolated environment that won’t interfere with system-wide packages, install both `pihole6api` and Ansible in a virtual environment:
+
+```bash
+python -m venv venv
+source venv/bin/activate
+pip install pihole6api ansible
+```
+
+To confirm that `ansible` and `pihole6api` are installed correctly within the environment, run:
+
+```bash
+which python && which ansible
+python -c "import pihole6api; print(pihole6api.__file__)"
+```
+
+To exit the virtual environment:
+
+```bash
+deactivate
+```
+
+**Using `pipx`:**
+
+If Ansible is installed via `pipx`, inject `pihole6api` into Ansible’s environment:
+
+```bash
+pipx inject ansible-core pihole6api
+```
+
+Verify installation:
+
+```bash
+pipx runpip ansible-core show pihole6api
+```
+
+Since Ansible does not automatically detect `pipx` environments, you must explicitly set the Python interpreter in your Ansible configuration:
+
+Edit `ansible.cfg`:
+
+```
+[defaults]
+interpreter_python = ~/.local/pipx/venvs/ansible/bin/python
+```
+
+For more information on `pipx` see [the official documentation](https://github.com/pypa/pipx) and [the Ansible install guide](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html).
+
+**Installing for System-Wide Ansible (Generally Not Recommended):**
+
+If Ansible was installed via a package manager (`apt`, `dnf`, `brew`) and a virtual environment or `pipx` is not a feasible or desired solution, run `pip` with `--break-system-packages` to bypass **PEP 668** restrictions:
+
+```bash
+sudo pip install --break-system-packages pihole6api
+```
+
+Verify installation:
+
+```bash
+python3 -c "import pihole6api; print(pihole6api.__file__)"
+
+```
+
 ## Usage Examples
 
 ### Create an A Record
