@@ -21,7 +21,7 @@ In future releases, additional roles and modules will be added to further extend
 
 - **Ansible:** Version 2.9 or later.
 - **Python:** The control node requires Python 3.x.
-- **piholev6api Library:**  
+- **pihole6api Library:**  
   Install the pihole6api library using pip:
   
   ```bash
