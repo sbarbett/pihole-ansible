@@ -1,0 +1,12 @@
+galaxy_info:
+  author: Shane Barbetta
+  description: >
+    An Ansible role that will manage sets of local records across several Pi-hole instances.
+  license: MIT
+  min_ansible_version: 2.9
+  galaxy_tags:
+    - pihole
+    - dns
+    - networking
+
+dependencies: []

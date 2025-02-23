@@ -1,0 +1,26 @@
+---
+- name: Process record {{ record.name }} on {{ pihole_instance.name }}
+  block:
+    - name: Manage A record on {{ pihole_instance.name }}
+      sbarbett.pihole.local_a_record:
+        host: "{{ record.name }}"
+        ip: "{{ record.data }}"
+        state: "{{ record.state }}"
+        url: "{{ pihole_instance.name }}"
+        password: "{{ pihole_instance.password }}"
+      when: record.type == "A"
+
+    - name: Manage CNAME record on {{ pihole_instance.name }}
+      sbarbett.pihole.local_cname:
+        host: "{{ record.name }}"
+        target: "{{ record.data }}"
+        ttl: "{{ record.ttl | default(300) }}"
+        state: "{{ record.state }}"
+        url: "{{ pihole_instance.name }}"
+        password: "{{ pihole_instance.password }}"
+      when: record.type == "CNAME"
+
+    - name: Pause for 1 second
+      command: sleep 1
+      changed_when: false
+      no_log: true

@@ -1,0 +1,15 @@
+namespace: sbarbett
+name: pihole
+version: "1.0.0"
+readme: README.md
+authors:
+  - Shane Barbetta
+description: >
+  A collection of modules for managing your Pi-hole installation.
+license: MIT
+tags:
+  - pihole
+  - dns
+  - networking
+dependencies: {}
+repository: https://github.com/sbarbett/pihole-ansible
