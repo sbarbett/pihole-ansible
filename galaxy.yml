@@ -1,6 +1,6 @@
 namespace: sbarbett
 name: pihole
-version: "1.0.0"
+version: "1.0.1"
 readme: README.md
 authors:
   - Shane Barbetta
