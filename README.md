@@ -1,4 +1,4 @@
-# pihole-ansible
+# 🍓 pihole-ansible
 
 This collection provides Ansible modules and roles for managing PiHole v6 via a custom API client. This collection is built on top of the [piholev6api](https://github.com/sbarbett/piholev6api) Python library, which handles authentication and requests.
 
