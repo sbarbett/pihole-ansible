@@ -9,7 +9,7 @@ except ImportError:
 
 DOCUMENTATION = r'''
 ---
-module: pihole_local_cname
+module: local_cname
 short_description: Manage Pi-hole local CNAME records via the pihole v6 API.
 description:
     - This module adds or removes local CNAME records on a Pi-hole instance using the piholev6api Python client.
@@ -48,7 +48,7 @@ options:
         required: true
         type: str
 author:
-    - Your Name (@yourhandle)
+    - Shane Barbetta (@sbarbett)
 '''
 
 EXAMPLES = r'''

@@ -9,7 +9,7 @@ except ImportError:
 
 DOCUMENTATION = r'''
 ---
-module: pihole_local_a_record
+module: local_a_record
 short_description: Manage Pi-hole local A records via pihole v6 API.
 description:
     - This module adds or removes local A records on a Pi-hole instance using the piholev6api Python client.
@@ -42,7 +42,7 @@ options:
         required: true
         type: str
 author:
-    - Your Name (@yourhandle)
+    - Shane Barbetta (@sbarbett)
 '''
 
 EXAMPLES = r'''

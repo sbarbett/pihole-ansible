@@ -1,0 +1,30 @@
+---
+- name: Manage Pi-hole local records
+  hosts: localhost
+  gather_facts: false
+  roles:
+    - role: sbarbett.pihole.manage_local_records
+      vars:
+        pihole_hosts:
+          - name: "https://your-pihole-1.example.com"
+            password: "{{ pihole_password }}"
+          - name: "https://your-pihole-2.example.com"
+            password: "{{ pihole_password }}"
+        pihole_records:
+          - name: dummy1.xyz
+            type: A
+            data: 192.168.1.1
+            state: absent
+          - name: dummy2.xyz
+            type: CNAME
+            data: dummy1.xyz
+            state: absent
+          - name: dummy3.xyz
+            type: A
+            data: 127.0.0.1
+            state: absent
+          - name: dummy4.xyz
+            type: CNAME
+            data: dummy2.xyz
+            ttl: 900
+            state: absent

@@ -1,0 +1,10 @@
+---
+- name: Disable DHCP client
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Disable Pi-hole DHCP
+      sbarbett.pihole.dhcp_config:
+        url: "https://your-pihole.example.com"
+        password: "{{ pihole_password }}"
+        state: absent

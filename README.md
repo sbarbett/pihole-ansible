@@ -114,111 +114,14 @@ python3 -c "import pihole6api; print(pihole6api.__file__)"
 
 ## Usage Examples
 
-### Create an A Record
-
-```yaml
----
-- name: Create test.example.com A record
-  hosts: localhost
-  gather_facts: false
-  tasks:
-    - name: Create test.example.com A record
-      sbarbett.pihole.local_a_record:
-        host: test.example.com
-        ip: 127.0.0.2
-        state: present
-        url: "{{ test_pihole_2 }}"
-        password: "{{ pihole_password }}"
-```
-
-### Delete an A Record
-
-```yaml
----
-- name: Delete test.example.com A record
-  hosts: localhost
-  gather_facts: false
-  tasks:
-    - name: Delete test.example.com A record
-      sbarbett.pihole.local_a_record:
-        host: test.example.com
-        ip: 127.0.0.1
-        state: absent
-        url: "{{ test_pihole_2 }}"
-        password: "{{ pihole_password }}"
-```
-
-### Create a CNAME
-
-```yaml
----
-- name: Create canonical.example.com CNAME
-  hosts: localhost
-  gather_facts: false
-  tasks:
-    - name: Create canonical.example.com CNAME
-      sbarbett.pihole.local_cname:
-        host: canonical.example.com
-        target: test.example.com
-        ttl: 901
-        state: present
-        url: "{{ test_pihole_2 }}"
-        password: "{{ pihole_password }}"
-```
-
-### Delete a CNAME
-
-```yaml
----
-- name: Delete canonical.example.com CNAME
-  hosts: localhost
-  gather_facts: false
-  tasks:
-    - name: Delete canonical.example.com CNAME
-      sbarbett.pihole.local_cname:
-        host: canonical.example.com
-        target: test.example.com
-        state: absent
-        url: "{{ test_pihole_2 }}"
-        password: "{{ pihole_password }}"
-```
-
-### Multiple Records & Instances
-
-Using the provided role you can manage multiple records on many instances in one play.
-
-```yaml
----
-- name: Manage Pi-hole local records
-  hosts: localhost
-  gather_facts: false
-  roles:
-    - role: sbarbett.pihole.manage_local_records
-      vars:
-        pihole_hosts:
-          - name: "https://test-pihole-1.example.xyz"
-            password: "{{ pihole_password }}"
-          - name: "https://test-pihole-2.example.xyz"
-            password: "{{ pihole_password }}"
-        pihole_records:
-          - name: dummy1.xyz
-            type: A
-            data: "192.168.1.1"
-            state: present
-          - name: dummy2.xyz
-            type: CNAME
-            data: dummy1.xyz
-            state: present
-          - name: dummy3.xyz
-            type: A
-            data: "127.0.0.1"
-            state: present
-          - name: dummy4.xyz
-            type: CNAME
-            data: dummy2.xyz
-            ttl: 900
-            state: present
-```
+* [Enable and Configure the PiHole DHCP Client](./examples/configure-dhcp-client.yml)
+* [Disable the PiHole DHCP Client](./examples/disable-dhcp-client.yml)
+* [Remove a DHCP Lease](./examples/remove-dhcp-lease.yml)
+* [Create a Local A Record](./examples/create-a-record.yml)
+* [Remove a Local A Record](./examples/delete-a-record.yml)
+* [Create a Local CNAME](./examples/create-cname.yml)
+* [Remove a Local CNAME](./examples/delete-cname.yml)
+* [Manage Local Records Across Multiple PiHoles](./examples/manage-records.yml)
 
 ## Documentation
 

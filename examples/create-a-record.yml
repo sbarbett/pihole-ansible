@@ -1,0 +1,12 @@
+---
+- name: Create test.example.com A record
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Create test.example.com A record
+      sbarbett.pihole.local_a_record:
+        host: test.example.com
+        ip: 127.0.0.2
+        state: present
+        url: "https://your-pihole.example.com"
+        password: "{{ pihole_password }}"

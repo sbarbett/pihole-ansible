@@ -1,0 +1,12 @@
+---
+- name: Delete canonical.example.com CNAME
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Delete canonical.example.com CNAME
+      sbarbett.pihole.local_cname:
+        host: canonical.example.com
+        target: test.example.com
+        state: absent
+        url: "https://your-pihole.example.com"
+        password: "{{ pihole_password }}"
