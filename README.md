@@ -9,6 +9,9 @@ This collection includes:
 - **Modules:**
   - `local_a_record`: Manage local A records.
   - `local_cname`: Manage local CNAME records.
+  - `dhcp_config`: Enable, disable and configure the DHCP client.
+  - `dhcp_remove_lease`: Delete existing leases.
+  - `listening_mode`: Toggle the PiHole's listening mode.
 
 - **Roles:**
   - `manage_local_records`: A role that iterates over one or more PiHole hosts and manages a batch of local DNS records (both A and CNAME) as defined by the user. For more details, please see the [role's README](roles/manage_local_records/README.md).
