@@ -47,7 +47,7 @@ The `pihole6api` library is required for this Ansible collection to function. Th
 pip install pihole6api
 ```
 
-However, some Linux distributions (Debian, Ubuntu, Fedora, etc.) **restrict system-wide `pip` installs** due to [PEP 668](https://peps.python.org/pep-0668/). In that case, use one of the methods below.
+However, some Linux distributions (Debian, macOS, Fedora, etc.) **restrict system-wide `pip` installs** due to [PEP 668](https://peps.python.org/pep-0668/). In that case, use one of the methods below.
 
 **Installing in a Virtual Environment (Recommended):**
 
@@ -114,14 +114,14 @@ python3 -c "import pihole6api; print(pihole6api.__file__)"
 
 ## Usage Examples
 
-* [Enable and Configure the PiHole DHCP Client](./examples/configure-dhcp-client.yml)
-* [Disable the PiHole DHCP Client](./examples/disable-dhcp-client.yml)
-* [Remove a DHCP Lease](./examples/remove-dhcp-lease.yml)
-* [Create a Local A Record](./examples/create-a-record.yml)
-* [Remove a Local A Record](./examples/delete-a-record.yml)
-* [Create a Local CNAME](./examples/create-cname.yml)
-* [Remove a Local CNAME](./examples/delete-cname.yml)
-* [Manage Local Records Across Multiple PiHoles](./examples/manage-records.yml)
+* [Enable and Configure the PiHole DHCP Client](https://github.com/sbarbett/pihole-ansible/blob/main/examples/configure-dhcp-client.yml)
+* [Disable the PiHole DHCP Client](https://github.com/sbarbett/pihole-ansible/blob/main/examples/disable-dhcp-client.yml)
+* [Remove a DHCP Lease](https://github.com/sbarbett/pihole-ansible/blob/main/examples/remove-dhcp-lease.yml)
+* [Create a Local A Record](https://github.com/sbarbett/pihole-ansible/blob/main/examples/create-a-record.yml)
+* [Remove a Local A Record](https://github.com/sbarbett/pihole-ansible/blob/main/examples/delete-a-record.yml)
+* [Create a Local CNAME](https://github.com/sbarbett/pihole-ansible/blob/main/examples/create-cname.yml)
+* [Remove a Local CNAME](https://github.com/sbarbett/pihole-ansible/blob/main/examples/delete-cname.yml)
+* [Manage Local Records Across Multiple PiHoles](https://github.com/sbarbett/pihole-ansible/blob/main/examples/manage-records.yml)
 
 ## Documentation
 
