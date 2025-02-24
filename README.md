@@ -128,7 +128,7 @@ python3 -c "import pihole6api; print(pihole6api.__file__)"
 
 ## Documentation
 
-* Each module includes embedded documentation. You can review the options by using `ansible-doc sbarbett.pihole.local_a_record` or `ansible-doc sbarbett.pihole.local_cname`.
+* Each module includes embedded documentation. You can review the options by using `ansible-doc sbarbett.module_name`.
 * Detailed information for the `manage_local_records` role is provided in its own `README` file within the role directory.
 
 ## License
