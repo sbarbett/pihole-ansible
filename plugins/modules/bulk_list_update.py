@@ -57,7 +57,7 @@ options:
             required: false
             type: list
             default: []
-            elements: str
+            elements: int
         type:
             description: The type of the list (block or allow)
             required: false
@@ -85,12 +85,14 @@ EXAMPLES = r"""
       - address: https://example.com/blocklist.txt
         enabled: true
         comment: "This is an example block list"
-        group: "Example Group"
+        groups:
+          - 0
+          - 1
+          - 3
         type: block
         state: present
       - address: https://example.com/blocklist2.txt
         enabled: false
-        group: "Example Group"
         type: block
         state: present
 
@@ -135,7 +137,7 @@ def run_module():
                 address=dict(type="str", required=True),
                 enabled=dict(type="bool", required=False, default=True),
                 comment=dict(type="str", required=False),
-                group=dict(type="str", required=False, default="Default"),
+                groups=dict(type="list", required=False, default=[]),
                 type=dict(type="str", required=False, default="block"),
                 state=dict(type="str", required=False, default="present"),
             ),
@@ -162,20 +164,6 @@ def run_module():
     except Exception as e:
         module.fail_json(msg=f"Failed to connect to Pi-hole: {e}", **result)
 
-    # Add default values to lists
-
-    for list_item in lists:
-        if "enabled" not in list_item:
-            list_item["enabled"] = True
-        if "comment" not in list_item:
-            list_item["comment"] = ""
-        if "groups" not in list_item:
-            list_item["groups"] = []
-        if "type" not in list_item:
-            list_item["type"] = "block"
-        if "state" not in list_item:
-            list_item["state"] = "present"
-
     # Retrieve current lists
     try:
         current_allow_lists = client.list_management.get_lists(list_type="allow")[
@@ -185,7 +173,7 @@ def run_module():
     except Exception as e:
         module.fail_json(
             msg=f"Failed to retrieve current block lists: {e}", **result)
-
+        
     # If no changes, return early
     if not lists:
         result["result"] = {"msg": "No block lists to update"}
@@ -218,21 +206,23 @@ def run_module():
 
     # find all lists, that need to be changed
 
-    changed_allow_lists = [
-        b
-        for b in lists
-        if b["address"] in [l["address"] for l in current_allow_lists] and b["type"] == "allow" and b["state"] == "present" and any(
-            b[k] != l[k] for k in b.keys() for l in current_block_lists if k in l.keys()
-        )
-    ]
+    changed_allow_lists = []
+    for b in lists:
+        for l in current_allow_lists:
+            # if list is already present and has the same address and rule should be present
+            if b["address"] == l["address"] and b["type"] == "allow" and b["state"] == "present":
+                # check if the list has changed
+                if b["enabled"] != l["enabled"] or b["comment"] != l["comment"] or b["groups"] != l["groups"]:
+                    changed_allow_lists.append(b)
 
-    changed_block_lists = [
-        b
-        for b in lists
-        if b["address"] in [l["address"] for l in current_block_lists] and b["type"] == "block" and b["state"] == "present" and any(
-            b[k] != l[k] for k in b.keys() for l in current_block_lists if k in l.keys()
-        )
-    ]
+    changed_block_lists = []
+    for b in lists:
+        for l in current_block_lists:
+            # if list is already present and has the same address and rule should be present
+            if b["address"] == l["address"] and b["type"] == "block" and b["state"] == "present":
+                # check if the list has changed
+                if b["enabled"] != l["enabled"] or b["comment"] != l["comment"] or b["groups"] != l["groups"]:
+                    changed_block_lists.append(b)
 
     # If no changes, return early
 
