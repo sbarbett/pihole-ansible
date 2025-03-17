@@ -21,6 +21,6 @@
       when: record.type == "CNAME"
 
     - name: Pause for 1 second
-      command: sleep 1
+      ansible.builtin.command: sleep 1
       changed_when: false
       no_log: true

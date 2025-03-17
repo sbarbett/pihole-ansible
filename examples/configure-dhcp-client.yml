@@ -12,14 +12,14 @@
         end: "10.0.7.100"
         router: "10.0.7.1"
         # (Optional) Leave netmask undefined to infer it from the device.
-        #netmask: "255.255.255.0"
+        # netmask: "255.255.255.0"
         # (Optional) The default lease time, if left unspecified, is 1 hour for IPv4 and 1 day for IPv6.
         lease_time: "7d"
         # (Optional) IPv6 is false by default and only used if the Pi-hole supports it.
-        #ipv6: true
-        # (Optional) Enables DHCPv4 rapid commit (faster address assignment). 
-        #rapid_commit: true
+        # ipv6: true
+        # (Optional) Enables DHCPv4 rapid commit (faster address assignment).
+        # rapid_commit: true
         # (Optional) Advertise Pi-hole DNS multiple times to mitigate clients adding their own DNS servers.
-        #multi_dns: true
+        # multi_dns: true
         # (Optional)When True, Pi-hole DHCP grants addresses only to clients specifically defined in dhcp.hosts (static reservations).
-        #ignore_end: true
+        # ignore_end: true

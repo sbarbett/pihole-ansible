@@ -1,11 +1,10 @@
-#SPDX-License-Identifier: MIT-0
+# SPDX-License-Identifier: MIT-0
 galaxy_info:
   author: Shane Barbetta
   description: >
     An Ansible role that will manage sets of allow lists and block lists across several Pi-hole instances.
-  company: your company (optional)
   license: MIT
-  min_ansible_version: 2.9
+  min_ansible_version: "2.9"
   galaxy_tags:
     - pihole
     - dns

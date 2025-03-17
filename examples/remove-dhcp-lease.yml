@@ -8,9 +8,9 @@
         url: "https://your-pihole.example.com"
         password: "{{ pihole_password }}"
         # At least one of the following parameters is required.
-        # If multiple parameters are provided, a lease matching all parameters 
+        # If multiple parameters are provided, a lease matching all parameters
         # must exist to be removed.
         ip: "10.0.7.51"
-        #name: "test-host4"
-        #hwaddr: "aa:bb:cc:dd:ee:f3"
-        #clientid: "01:aa:bb:cc:dd:ee:f5"
+        # name: "test-host4"
+        # hwaddr: "aa:bb:cc:dd:ee:f3"
+        # clientid: "01:aa:bb:cc:dd:ee:f5"

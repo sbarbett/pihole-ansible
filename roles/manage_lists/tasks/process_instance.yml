@@ -1,6 +1,7 @@
 ---
 - name: Process each list on {{ pihole_instance.name }}
-  include_tasks: process_list.yml
+  ansible.builtin.include_tasks:
+    file: process_list.yml
   loop: "{{ pihole_lists }}"
   loop_control:
-    loop_var: list_item 
+    loop_var: list_item
