@@ -12,9 +12,12 @@ This collection includes:
   - `dhcp_config`: Enable, disable and configure the DHCP client.
   - `dhcp_remove_lease`: Delete existing leases.
   - `listening_mode`: Toggle the PiHole's listening mode.
+  - `block_list`: Manage block lists.
+  - `allow_list`: Manage allow lists.
 
 - **Roles:**
-  - `manage_local_records`: A role that iterates over one or more PiHole hosts and manages a batch of local DNS records (both A and CNAME) as defined by the user. For more details, please see the [role's README](roles/manage_local_records/README.md).
+  - `manage_local_records`: A role that iterates over one or more PiHole hosts and manages a batch of local DNS records (both A and CNAME) as defined by the user. For more details, please see the [role's README](https://github.com/sbarbett/pihole-ansible/blob/main/roles/manage_local_records/README.md).
+  - `manage_lists`: A role that iterates over one or more PiHole hosts and manages a batch of allow and block lists as defined by the user. For more details, please see the [role's README](https://github.com/sbarbett/pihole-ansible/blob/main/roles/manage_lists/README.md).
 
 In future releases, additional roles and modules will be added to further extend the capabilities of this collection.
 
@@ -117,6 +120,8 @@ python3 -c "import pihole6api; print(pihole6api.__file__)"
 
 ## Usage Examples
 
+### Modules
+
 * [Enable and Configure the PiHole DHCP Client](https://github.com/sbarbett/pihole-ansible/blob/main/examples/configure-dhcp-client.yml)
 * [Disable the PiHole DHCP Client](https://github.com/sbarbett/pihole-ansible/blob/main/examples/disable-dhcp-client.yml)
 * [Remove a DHCP Lease](https://github.com/sbarbett/pihole-ansible/blob/main/examples/remove-dhcp-lease.yml)
@@ -124,12 +129,20 @@ python3 -c "import pihole6api; print(pihole6api.__file__)"
 * [Remove a Local A Record](https://github.com/sbarbett/pihole-ansible/blob/main/examples/delete-a-record.yml)
 * [Create a Local CNAME](https://github.com/sbarbett/pihole-ansible/blob/main/examples/create-cname.yml)
 * [Remove a Local CNAME](https://github.com/sbarbett/pihole-ansible/blob/main/examples/delete-cname.yml)
+* [Create an Allow List](https://github.com/sbarbett/pihole-ansible/blob/main/examples/create-allow-list.yml)
+* [Create a Block List](https://github.com/sbarbett/pihole-ansible/blob/main/examples/create-block-list.yml)
+* [Remove an Allow List](https://github.com/sbarbett/pihole-ansible/blob/main/examples/delete-allow-list.yml)
+* [Remove a Block List](https://github.com/sbarbett/pihole-ansible/blob/main/examples/delete-block-list.yml)
+
+### Roles
+
 * [Manage Local Records Across Multiple PiHoles](https://github.com/sbarbett/pihole-ansible/blob/main/examples/manage-records.yml)
+* [Manage Lists Across Multiple PiHoles](https://github.com/sbarbett/pihole-ansible/blob/main/examples/manage-lists.yml)
 
 ## Documentation
 
 * Each module includes embedded documentation. You can review the options by using `ansible-doc sbarbett.module_name`.
-* Detailed information for the `manage_local_records` role is provided in its own `README` file within the role directory.
+* Detailed information for each role is provided in its own `README` file within the role directory.
 
 ## License
 
