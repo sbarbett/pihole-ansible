@@ -1,0 +1,21 @@
+---
+- name: Create test block list
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Add a block list
+      sbarbett.pihole.block_list:
+        address: "https://example.com/blocklist.txt"
+        state: present
+        comment: "Example blocklist"
+        url: "https://your-pihole.example.com"
+        password: "{{ pihole_password }}"
+
+    - name: Update a block list with groups
+      sbarbett.pihole.block_list:
+        address: "https://example.com/blocklist.txt"
+        state: present
+        comment: "Example blockist - updated"
+        groups: [0, 1] # If a group does not exist, the module will fail gracefully
+        url: "https://your-pihole.example.com"
+        password: "{{ pihole_password }}"

@@ -1,0 +1,31 @@
+---
+- name: Manage Pi-hole lists
+  hosts: localhost
+  gather_facts: false
+  roles:
+    - role: sbarbett.pihole.manage_lists
+      vars:
+        pihole_hosts:
+          - name: "https://your-pihole-1.example.com"
+            password: "{{ pihole_password }}"
+          - name: "https://your-pihole-2.example.com"
+            password: "{{ pihole_password }}"
+        pihole_lists:
+          - address:"https://example.com/whitelist.txt"
+            type: "allow"
+            comment: "Example whitelist"
+            state: present
+          - address: "https://example.com/blocklist.txt"
+            type: "block"
+            comment: "Example blocklist"
+            state: present
+          - address: "https://example.com/blocklist2.txt"
+            type: "block"
+            comment: "Example blocklist with groups"
+            groups: [0, 1]
+            state: present
+          - address: "https://example.com/whitelist2.txt"
+            type: "allow"
+            comment: "Example whitelist with groups"
+            groups: [0, 1]
+            state: present

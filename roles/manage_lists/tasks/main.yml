@@ -1,0 +1,9 @@
+#SPDX-License-Identifier: MIT-0
+---
+# tasks file for collections/ansible_collections/sbarbett/pihole/roles/manage_lists
+
+- name: Process each Pi-hole instance
+  include_tasks: process_instance.yml
+  loop: "{{ pihole_hosts }}"
+  loop_control:
+    loop_var: pihole_instance
