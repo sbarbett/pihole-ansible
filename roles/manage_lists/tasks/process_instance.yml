@@ -1,7 +1,6 @@
 ---
 - name: Process each list on {{ pihole_instance.name }}
-  ansible.builtin.include_tasks:
-    file: process_list.yml
-  loop: "{{ pihole_lists }}"
-  loop_control:
-    loop_var: list_item
+  sbarbett.pihole.bulk_list_update:
+    url: "{{ pihole_instance.name }}"
+    password: "{{ pihole_instance.password }}"
+    lists: "{{ pihole_lists }}"
