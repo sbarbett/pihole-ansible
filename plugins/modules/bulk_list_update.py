@@ -194,12 +194,12 @@ def run_module():
     # find all lists, that need to be removed
 
     removed_allow_lists = [
-        b
+        { "item": b["address"], "type": "allow" } # item instead of address due to bug in PiHole, see: https://github.com/pi-hole/FTL/issues/2377
         for b in lists
         if b["address"] in [l["address"] for l in current_allow_lists] and b["type"] == "allow" and b["state"] == "absent"
     ]
     removed_block_lists = [
-        b
+        { "item": b["address"], "type": "block" }
         for b in lists
         if b["address"] in [l["address"] for l in current_block_lists] and b["type"] == "block" and b["state"] == "absent"
     ]
