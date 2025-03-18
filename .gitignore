@@ -1,5 +1,6 @@
 # Ignore .zip so people don't accidentally commit their settings
 *.zip
+.ansible/*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
