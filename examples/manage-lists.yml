@@ -11,7 +11,7 @@
           - name: "https://your-pihole-2.example.com"
             password: "{{ pihole_password }}"
         pihole_lists:
-          - address:"https://example.com/whitelist.txt"
+          - address: "https://example.com/whitelist.txt"
             type: "allow"
             comment: "Example whitelist"
             state: present

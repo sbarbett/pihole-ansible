@@ -6,7 +6,8 @@ authors:
   - Shane Barbetta
 description: >
   A collection of modules for managing your Pi-hole installation.
-license: MIT
+license:
+  - "MIT"
 tags:
   - pihole
   - dns
