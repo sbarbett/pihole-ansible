@@ -2,7 +2,24 @@
 
 All notable changes to this project will be documented in this file.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [1.1.0] - 2025-03-19
+
+### Added
+- New `groups.py` module for managing Pi-hole groups
+- New `clients.py` module for managing Pi-hole clients
+- New `group_client_manager` role for managing groups and clients across multiple Pi-hole instances
+- Example playbooks:
+  - `manage-groups.yml` to demonstrate the groups module
+  - `manage-clients.yml` to demonstrate the clients module
+  - `manage-groups-clients.yml` to demonstrate the group_client_manager role
+
+### Changed
+- Enhanced `allow_list.py` and `block_list.py` modules to support batch processing of multiple list entries
+- Modified modules to accept group names instead of requiring group IDs
+- Updated the `manage_lists` role to use batch processing for better performance
 
 ## [1.0.5] - 2025-03-17
 ### Added

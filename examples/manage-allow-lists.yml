@@ -1,0 +1,28 @@
+---
+- name: Manage PiHole allow lists
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Manage allow lists with batch processing
+      sbarbett.pihole.allow_list:
+        lists:
+          - address: "https://example.com/whitelist1.txt"
+            state: absent
+            comment: "Example whitelist 1"
+            groups:
+              - Default
+              - test
+          - address: "https://example.com/whitelist2.txt"
+            state: absent
+            comment: "Example whitelist 2"
+            groups:
+              - Default
+          - address: "https://example.com/whitelist3.txt"
+            state: absent
+        url: "https://your-pihole.example.com"
+        password: "{{ pihole_password }}"
+      register: allow_list_result
+
+    - name: Display allow list result
+      ansible.builtin.debug:
+        var: allow_list_result

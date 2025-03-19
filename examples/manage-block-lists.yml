@@ -1,0 +1,28 @@
+---
+- name: Manage PiHole block lists
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Manage block lists with batch processing
+      sbarbett.pihole.block_list:
+        lists:
+          - address: "https://example.com/blocklist1.txt"
+            state: absent
+            comment: "Example block list 1"
+            groups:
+              - Default
+              - test
+          - address: "https://example.com/blocklist2.txt"
+            state: absent
+            comment: "Example block list 2"
+            groups:
+              - Default
+          - address: "https://example.com/blocklist3.txt"
+            state: absent
+        url: "https://your-pihole.example.com"
+        password: "{{ pihole_password }}"
+      register: block_list_result
+
+    - name: Display block list result
+      ansible.builtin.debug:
+        var: block_list_result

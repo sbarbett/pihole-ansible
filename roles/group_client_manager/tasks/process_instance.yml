@@ -1,0 +1,37 @@
+---
+# Process groups first, then clients
+
+- name: Process groups on {{ pihole_instance.name }}
+  sbarbett.pihole.groups:
+    groups: "{{ pihole_groups }}"
+    url: "{{ pihole_instance.name }}"
+    password: "{{ pihole_instance.password }}"
+  when: pihole_groups is defined and pihole_groups | length > 0
+  register: groups_result
+
+- name: Display groups result for {{ pihole_instance.name }}
+  ansible.builtin.debug:
+    msg:
+      - "Groups processed: {{ groups_result.groups | default([]) | length
+          if pihole_groups is defined and pihole_groups | length > 0 else 0 }}"
+      - "Changes made: {{ groups_result.changed | default(false) }}"
+      - "Changed groups: {{ groups_result.groups | selectattr('state', 'in', ['created', 'updated', 'deleted'])
+          | list | length if groups_result.changed else 0 }}"
+
+# Process clients after groups
+- name: Process clients on {{ pihole_instance.name }}
+  sbarbett.pihole.clients:
+    clients: "{{ pihole_clients }}"
+    url: "{{ pihole_instance.name }}"
+    password: "{{ pihole_instance.password }}"
+  when: pihole_clients is defined and pihole_clients | length > 0
+  register: clients_result
+
+- name: Display clients result for {{ pihole_instance.name }}
+  ansible.builtin.debug:
+    msg:
+      - "Clients processed: {{ clients_result.clients | default([]) | length
+          if pihole_clients is defined and pihole_clients | length > 0 else 0 }}"
+      - "Changes made: {{ clients_result.changed | default(false) }}"
+      - "Changed clients: {{ clients_result.clients | selectattr('state', 'in', ['created', 'updated', 'deleted'])
+          | list | length if clients_result.changed else 0 }}"

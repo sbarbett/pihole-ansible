@@ -1,0 +1,14 @@
+# SPDX-License-Identifier: MIT-0
+galaxy_info:
+  author: Shane Barbetta
+  description: >
+    An Ansible role that manages Pi-hole groups and clients across multiple Pi-hole instances.
+  license: MIT
+  min_ansible_version: "2.9"
+  galaxy_tags:
+    - pihole
+    - dns
+    - networking
+    - adblock
+
+dependencies: []

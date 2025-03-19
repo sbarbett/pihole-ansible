@@ -1,0 +1,27 @@
+---
+- name: Manage PiHole clients
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Manage PiHole clients
+      sbarbett.pihole.clients:
+        clients:
+          - name: 192.168.30.0/24
+            comment: Default VLAN
+            groups:
+              - Default
+              - test
+            state: absent
+          - name: 192.168.40.0/24
+            groups:
+              - test
+            state: absent
+          - name: 192.168.50.0/24
+            state: absent
+        url: "https://your-pihole.example.com"
+        password: "{{ pihole_password }}"
+      register: client_result
+
+    - name: Display client result
+      ansible.builtin.debug:
+        var: client_result

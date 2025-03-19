@@ -14,12 +14,13 @@ This collection includes:
   - `listening_mode`: Toggle the PiHole's listening mode.
   - `block_list`: Manage block lists.
   - `allow_list`: Manage allow lists.
+  - `groups`: Manage groups.
+  - `clients`: Manage clients.
 
 - **Roles:**
-  - `manage_local_records`: A role that iterates over one or more PiHole hosts and manages a batch of local DNS records (both A and CNAME) as defined by the user. For more details, please see the [role's README](https://github.com/sbarbett/pihole-ansible/blob/main/roles/manage_local_records/README.md).
-  - `manage_lists`: A role that iterates over one or more PiHole hosts and manages a batch of allow and block lists as defined by the user. For more details, please see the [role's README](https://github.com/sbarbett/pihole-ansible/blob/main/roles/manage_lists/README.md).
-
-In future releases, additional roles and modules will be added to further extend the capabilities of this collection.
+  - `manage_local_records`: A role that iterates over one or more PiHole hosts and manages a batch of local DNS records (both A and CNAME) as defined by the user. ([README](https://github.com/sbarbett/pihole-ansible/blob/main/roles/manage_local_records/README.md))
+  - `manage_lists`: A role that iterates over one or more PiHole hosts and manages a batch of allow and block lists as defined by the user. ([README](https://github.com/sbarbett/pihole-ansible/blob/main/roles/manage_lists/README.md))
+  - `manage_groups_clients`: A role that iterates over one or more PiHole hosts and manages a batch of groups and clients as defined by the user. ([README](https://github.com/sbarbett/pihole-ansible/blob/main/roles/manage_groups_clients/README.md))
 
 ## Getting Started
 
@@ -131,13 +132,18 @@ python3 -c "import pihole6api; print(pihole6api.__file__)"
 * [Remove a Local CNAME](https://github.com/sbarbett/pihole-ansible/blob/main/examples/delete-cname.yml)
 * [Create an Allow List](https://github.com/sbarbett/pihole-ansible/blob/main/examples/create-allow-list.yml)
 * [Create a Block List](https://github.com/sbarbett/pihole-ansible/blob/main/examples/create-block-list.yml)
-* [Remove an Allow List](https://github.com/sbarbett/pihole-ansible/blob/main/examples/delete-allow-list.yml)
-* [Remove a Block List](https://github.com/sbarbett/pihole-ansible/blob/main/examples/delete-block-list.yml)
+* [Manage Allow Lists](https://github.com/sbarbett/pihole-ansible/blob/main/examples/manage-allow-lists.yml)
+* [Manage Block Lists](https://github.com/sbarbett/pihole-ansible/blob/main/examples/manage-block-lists.yml)
+* [Manage Groups](https://github.com/sbarbett/pihole-ansible/blob/main/examples/manage-groups.yml)
+* [Manage Clients](https://github.com/sbarbett/pihole-ansible/blob/main/examples/manage-clients.yml)
 
 ### Roles
 
-* [Manage Local Records Across Multiple PiHoles](https://github.com/sbarbett/pihole-ansible/blob/main/examples/manage-records.yml)
-* [Manage Lists Across Multiple PiHoles](https://github.com/sbarbett/pihole-ansible/blob/main/examples/manage-lists.yml)
+Roles are designed to orchestrate changes across multiple PiHole instances.
+
+* [Manage Local Records](https://github.com/sbarbett/pihole-ansible/blob/main/examples/manage-records.yml)
+* [Manage Lists](https://github.com/sbarbett/pihole-ansible/blob/main/examples/manage-lists.yml)
+* [Manage Groups and Clients](https://github.com/sbarbett/pihole-ansible/blob/main/examples/manage-groups-clients.yml)
 
 ## Documentation
 

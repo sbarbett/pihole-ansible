@@ -14,18 +14,22 @@
           - address: "https://example.com/whitelist.txt"
             type: "allow"
             comment: "Example whitelist"
-            state: present
+            state: absent
           - address: "https://example.com/blocklist.txt"
             type: "block"
             comment: "Example blocklist"
-            state: present
+            state: absent
           - address: "https://example.com/blocklist2.txt"
             type: "block"
-            comment: "Example blocklist with groups"
-            groups: [0, 1]
-            state: present
+            comment: "Example blocklist with group names"
+            groups:
+              - Default
+              - test
+            state: absent
           - address: "https://example.com/whitelist2.txt"
             type: "allow"
-            comment: "Example whitelist with groups"
-            groups: [0, 1]
-            state: present
+            comment: "Example whitelist with group names"
+            groups:
+              - Default
+              - test
+            state: absent

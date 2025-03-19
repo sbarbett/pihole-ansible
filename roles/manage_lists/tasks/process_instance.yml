@@ -1,7 +1,35 @@
 ---
-- name: Process each list on {{ pihole_instance.name }}
-  ansible.builtin.include_tasks:
-    file: process_list.yml
-  loop: "{{ pihole_lists }}"
-  loop_control:
-    loop_var: list_item
+- name: Prepare allow lists and block lists for {{ pihole_instance.name }}
+  ansible.builtin.set_fact:
+    allow_lists: "{{ pihole_lists | selectattr('type', 'equalto', 'allow') | list }}"
+    block_lists: "{{ pihole_lists | selectattr('type', 'equalto', 'block') | list }}"
+
+- name: Remove type field from allow lists
+  ansible.builtin.set_fact:
+    allow_lists_filtered: "{{ allow_lists | map('dict2items') | map('selectattr', 'key', 'ne', 'type') | map('items2dict') | list }}"
+
+- name: Remove type field from block lists
+  ansible.builtin.set_fact:
+    block_lists_filtered: "{{ block_lists | map('dict2items') | map('selectattr', 'key', 'ne', 'type') | map('items2dict') | list }}"
+
+- name: Process allow lists on {{ pihole_instance.name }}
+  sbarbett.pihole.allow_list:
+    lists: "{{ allow_lists_filtered }}"
+    url: "{{ pihole_instance.name }}"
+    password: "{{ pihole_instance.password }}"
+  when: allow_lists | length > 0
+  register: allow_lists_result
+
+- name: Process block lists on {{ pihole_instance.name }}
+  sbarbett.pihole.block_list:
+    lists: "{{ block_lists_filtered }}"
+    url: "{{ pihole_instance.name }}"
+    password: "{{ pihole_instance.password }}"
+  when: block_lists | length > 0
+  register: block_lists_result
+
+- name: Display results for {{ pihole_instance.name }}
+  ansible.builtin.debug:
+    msg:
+      - "Allow lists processed: {{ allow_lists_result.result | default([]) | length if allow_lists | length > 0 else 0 }}"
+      - "Block lists processed: {{ block_lists_result.result | default([]) | length if block_lists | length > 0 else 0 }}"

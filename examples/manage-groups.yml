@@ -1,0 +1,26 @@
+---
+- name: Manage PiHole groups
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Manage PiHole groups
+      sbarbett.pihole.groups:
+        groups:
+          - name: PiHole Default
+            comment: The default group
+            state: absent
+          - name: Cameras
+            enabled: true
+            state: absent
+          - name: Default2
+            state: absent
+          - name: IOT
+            comment: IOT VLAN
+            state: absent
+        url: "https://your-pihole.example.com"
+        password: "{{ pihole_password }}"
+      register: group_result
+
+    - name: Display group result
+      ansible.builtin.debug:
+        var: group_result

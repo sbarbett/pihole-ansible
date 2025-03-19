@@ -1,0 +1,10 @@
+# SPDX-License-Identifier: MIT-0
+---
+# tasks file for collections/ansible_collections/sbarbett/pihole/roles/group_client_manager
+
+- name: Process each Pi-hole instance
+  ansible.builtin.include_tasks:
+    file: process_instance.yml
+  loop: "{{ pihole_hosts }}"
+  loop_control:
+    loop_var: pihole_instance

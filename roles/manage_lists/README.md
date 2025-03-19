@@ -4,9 +4,10 @@ This role is designed to manage allow lists and block lists on one or more Pi-ho
 
 ## Overview
 
-- Manage allow lists and block lists on multiple Pi-hole instances.
+- Manage allow lists and block lists on multiple Pi-hole instances using batch processing.
 - Ensure idempotent operations: lists are added, updated, or removed based on the desired state.
-- Validate that specified groups exist before attempting to apply them to lists.
+- Support for group names instead of just group IDs, with automatic mapping to the correct IDs.
+- Efficient processing by grouping operations by list type.
 
 ## Requirements
 
@@ -30,7 +31,9 @@ A list of list definitions. Each list is a dictionary with the following keys:
 * `address`: The URL of the list.
 * `type`: The list type. Allowed values are `allow` or `block`.
 * `comment`: (Optional) A comment describing the list.
-* `groups`: (Optional) A list of group IDs to associate with the list. The role will validate that these groups exist.
+* `groups`: (Optional) A list of group names or IDs to associate with the list. 
+  * If using group names, the role will map these to their corresponding IDs.
+  * If using group IDs, they must be integers.
 * `enabled`: (Optional) Whether the list is enabled. Default is `true`.
 * `state`: Desired state for the list. Allowed values are `present` or `absent`.
 
@@ -60,13 +63,17 @@ A list of list definitions. Each list is a dictionary with the following keys:
             state: present
           - address: "https://example.com/blocklist2.txt"
             type: "block"
-            comment: "Example blocklist with groups"
-            groups: [0, 1]
+            comment: "Example blocklist with group names"
+            groups: 
+              - Default
+              - test
             state: present
           - address: "https://example.com/whitelist2.txt"
             type: "allow"
-            comment: "Example whitelist with groups"
-            groups: [0, 1]
+            comment: "Example whitelist with group IDs"
+            groups: 
+              - 0
+              - 1
             state: present
           - address: "https://example.com/old-blocklist.txt"
             type: "block"
