@@ -1,6 +1,6 @@
 # manage_local_records_lxc
 
-This role is designed to manage local DNS records (both A and AA) from Anisble Proxmox Inventory plugin on one or more Pi-hole instances. It iterates over a list of Pi-hole hosts and applies all changes from the Proxmox invenotry facts.
+This role is designed to manage local DNS records (both A and AAAA) from Anisble Proxmox Inventory plugin on one or more Pi-hole instances. It iterates over a list of Pi-hole hosts and applies all changes from the Proxmox invenotry facts.
 
 ## Overview
 
