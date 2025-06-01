@@ -1,0 +1,4 @@
+---
+- name: Process each record on {{ pihole_instance.name }}
+  ansible.builtin.include_tasks:
+    file: process_record.yml

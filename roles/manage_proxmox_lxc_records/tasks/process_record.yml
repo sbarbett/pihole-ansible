@@ -1,0 +1,27 @@
+---
+- name: Process Proxmox records on Pi-hole instance
+  block:
+    # - name: Manage A record
+    #   ansible.builtin.debug:
+    #     msg: "Processing {{ item }} on {{ pihole_instance.name }}"
+    #   loop: "{{ ansible_play_hosts_all }}"
+
+    - name: Manage A record
+      sbarbett.pihole.local_a_record:
+        host: "{{ hostvars[item]['inventory_hostname'] }}"
+        ip: "{{ hostvars[item]['proxmox_net0']['ip'].split('/')[0] }}" 
+        state: "present"
+        url: "{{ pihole_instance.name }}"
+        password: "{{ pihole_instance.password }}"
+      when: hostvars[item]['proxmox_net0']['ip'] is defined
+      loop: "{{ ansible_play_hosts_all }}"
+
+    - name: Manage AAAA record
+      sbarbett.pihole.local_aaaa_record:
+        host: "{{ hostvars[item]['inventory_hostname'] }}"
+        ip: "{{ hostvars[item]['proxmox_net0']['ip6'].split('/')[0] }}" 
+        state: "present"
+        url: "{{ pihole_instance.name }}"
+        password: "{{ pihole_instance.password }}"
+      when: hostvars[item]['proxmox_net0']['ip6'] is defined
+      loop: "{{ ansible_play_hosts_all }}"
