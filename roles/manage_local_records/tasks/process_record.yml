@@ -14,6 +14,15 @@
         password: "{{ pihole_instance.password }}"
       when: record.type == "A"
 
+    - name: Manage AAAA record
+      sbarbett.pihole.local_aaaa_record:
+        host: "{{ record.name }}"
+        ip: "{{ record.data }}"
+        state: "{{ record.state }}"
+        url: "{{ pihole_instance.name }}"
+        password: "{{ pihole_instance.password }}"
+      when: record.type == "AAAA"
+
     - name: Manage CNAME record
       ansible.builtin.debug:
         msg: "Processing CNAME record {{ record.name }} on {{ pihole_instance.name }}"

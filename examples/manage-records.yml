@@ -20,8 +20,8 @@
             data: dummy1.xyz
             state: absent
           - name: dummy3.xyz
-            type: A
-            data: 127.0.0.1
+            type: AAAA
+            data: 2001:db8::1
             state: absent
           - name: dummy4.xyz
             type: CNAME

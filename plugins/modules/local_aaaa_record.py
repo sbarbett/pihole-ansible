@@ -1,5 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+# this is litteraly a clone of local_a_record.py but for AAAA records. pi-hole does not disgguish between A and AAAA records in the API, so this is just a copy of the other module with AAAA in the name
 
 from ansible.module_utils.basic import AnsibleModule
 try:
@@ -9,14 +10,14 @@ except ImportError:
 
 DOCUMENTATION = r'''
 ---
-module: local_a_record
-short_description: Manage Pi-hole local A records via pihole v6 API.
+module: local_aaaa_record
+short_description: Manage Pi-hole local AAAA records via pihole v6 API.
 description:
-    - This module adds or removes local A records on a Pi-hole instance using the piholev6api Python client.
+    - This module adds or removes local AAAA records on a Pi-hole instance using the piholev6api Python client.
 options:
     host:
         description:
-            - The hostname for the A record.
+            - The hostname for the AAAA record.
         required: true
         type: str
     ip:
@@ -46,18 +47,18 @@ author:
 '''
 
 EXAMPLES = r'''
-- name: Create test.example.com A record
-  sbarbett.pihole.local_a_record:
+- name: Create test.example.com AAAAA record
+  sbarbett.pihole.local_aaaa_record:
     host: test.example.com
-    ip: 127.0.0.1
+    ip: 2001:db8::1
     state: present
     url: "https://your-pihole.example.com"
     password: "{{ pihole_password }}"
 
-- name: Delete test.example.com A record
-  sbarbett.pihole.local_a_record:
+- name: Delete test.example.com AAAA record
+  sbarbett.pihole.local_aaaa_record:
     host: test.example.com
-    ip: 127.0.0.1
+    ip: 2001:db8::1
     state: absent
     url: "https://your-pihole.example.com"
     password: "{{ pihole_password }}"
@@ -111,8 +112,8 @@ def run_module():
         for entry in hosts_list:
             parts = entry.split(None, 1)  # expected format: "ip host"
             if len(parts) == 2 and parts[1] == host:
-                # simply check if parts[0] is a valid IPv4 address (without regex)
-                if len(parts[0].split('.')) == 4:
+                # Simply/stupidly check if parts[0] is IPv6
+                if ':' in parts[0]:
                     existing_ip = parts[0]
                     break
 
@@ -144,7 +145,7 @@ def run_module():
         module.exit_json(**result)
 
     except Exception as e:
-        module.fail_json(msg=f"Error managing local A record: {e}", **result)
+        module.fail_json(msg=f"Error managing local AAAA record: {e}", **result)
     finally:
         if client is not None:
             client.close_session()
