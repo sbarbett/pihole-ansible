@@ -176,3 +176,9 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+# Cursor files
+.cursor/
+
+# Project documentation
+PROJECT.md
