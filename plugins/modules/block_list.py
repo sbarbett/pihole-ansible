@@ -100,6 +100,12 @@ options:
             - The URL of the Pi-hole instance.
         required: true
         type: str
+    update_gravity:
+        description:
+            - Whether to run gravity after making changes.
+        required: false
+        type: bool
+        default: false
 author:
     - Shane Barbetta (@sbarbett)
 '''
@@ -143,7 +149,7 @@ EXAMPLES = r'''
     url: "https://your-pihole.example.com"
     password: "{{ pihole_password }}"
 
-- name: Update a block list with group names
+- name: Update a block list with group names and run gravity
   sbarbett.pihole.block_list:
     address: "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts"
     state: present
@@ -151,6 +157,7 @@ EXAMPLES = r'''
     groups: ["Default", "test"]
     url: "https://your-pihole.example.com"
     password: "{{ pihole_password }}"
+    update_gravity: true
 '''
 
 RETURN = r'''
@@ -232,7 +239,8 @@ def run_module():
         groups=dict(type='list', elements='raw', required=False, default=[]),
         enabled=dict(type='bool', required=False, default=True),
         password=dict(type='str', required=True, no_log=True),
-        url=dict(type='str', required=True)
+        url=dict(type='str', required=True),
+        update_gravity=dict(type='bool', required=False, default=False)
     )
 
     result = dict(
@@ -249,6 +257,7 @@ def run_module():
 
     password = module.params['password']
     url = module.params['url']
+    update_gravity = module.params.get('update_gravity', False)
     
     # Check if we're using the new lists parameter or legacy parameters
     lists_param = module.params['lists']
@@ -384,7 +393,19 @@ def run_module():
                         if item['address'] == address and item['action'] == 'marked_for_deletion':
                             item['action'] = 'deleted'
                             item['response'] = delete_response
-        
+
+        if update_gravity:
+            client.connection.connection_timeout = 60  # Set a timeout for the gravity run
+            res = client.actions.run_gravity()
+            if "List has been updated" in res:
+                result['changed'] = True
+            processed_results.append(
+                {
+                    'action': 'run_gravity',
+                    'response': res,
+                }
+            )
+
         result['result'] = processed_results
         module.exit_json(**result)
 
