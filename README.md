@@ -8,6 +8,7 @@ This collection includes:
 
 - **Modules:**
   - `local_a_record`: Manage local A records.
+  - `local_aaaa_record`: Manage local AAAAA records. (see `local_a_record` configuration and examples )
   - `local_cname`: Manage local CNAME records.
   - `dhcp_config`: Enable, disable and configure the DHCP client.
   - `dhcp_remove_lease`: Delete existing leases.

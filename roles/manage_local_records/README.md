@@ -57,8 +57,8 @@ A list of record definitions. Each record is a dictionary with the following key
             data: dummy1.xyz
             state: present
           - name: dummy3.xyz
-            type: A
-            data: "127.0.0.1"
+            type: AAAA
+            data: "2001:db8::1"
             state: present
           - name: dummy4.xyz
             type: CNAME

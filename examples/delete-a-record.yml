@@ -10,3 +10,11 @@
         state: absent
         url: "https://your-pihole.example.com"
         password: "{{ pihole_password }}"
+
+    - name: Delete test.example.com AAAA record
+      sbarbett.pihole.local_a_record:
+        host: test.example.com
+        ip: 2001:db8::1
+        state: absent
+        url: "https://your-pihole.example.com"
+        password: "{{ pihole_password }}"
