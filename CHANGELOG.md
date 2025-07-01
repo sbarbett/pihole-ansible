@@ -5,10 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
 
-## [1.1.1] - 2025-06-01
+## [1.1.1] - 2025-06-30
+
+### Added
 - New `local_aaaa_record` module for IPv6 AAAA records
 - Playbook to create local DNS records from Proxmox Invenotry
+- Flag for running gravity update when managing lists
 
 ## [1.1.0] - 2025-03-19
 
@@ -27,6 +31,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated the `manage_lists` role to use batch processing for better performance
 
 ## [1.0.5] - 2025-03-17
+
 ### Added
 - `allow_list` module for adding and removing allow lists based on `state`.
 - `block_list` module for adding and removing block lists based on `state`.
@@ -37,6 +42,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated `README.md` with relevant links.
 
 ## [1.0.4] - 2025-02-24
+
 ### Added
 - Support for toggling Pi-hole's listening mode.
 
@@ -47,6 +53,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `local` - Allow only local requests.
 
 ## [1.0.2] - 2025-02-23
+
 ### Added
 - Clearer installation instructions for `pihole6api`.
 - Support for configuring DHCP clients.
@@ -56,6 +63,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Moved sample playbooks to `examples/` for better structure.
 
 ## [1.0.0] - 2025-02-22
+
 ### Added
 - Custom modules for local A and CNAME record management with idempotent behavior.
 - Role to batch process records across different Pi-hole hosts.

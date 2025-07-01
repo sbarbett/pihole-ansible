@@ -2,7 +2,7 @@
 - name: Manage A record
   sbarbett.pihole.local_a_record:
     host: "{{ inventory_hostname }}"
-    ip: "{{ proxmox_net0.ip.split('/')[0] }}" 
+    ip: "{{ proxmox_net0.ip.split('/')[0] }}"
     state: "present"
     url: "{{ pihole_instance.name }}"
     password: "{{ pihole_instance.password }}"
@@ -11,7 +11,7 @@
 - name: Manage AAAA record
   sbarbett.pihole.local_aaaa_record:
     host: "{{ inventory_hostname }}"
-    ip: "{{ proxmox_net0.ip6.split('/')[0] }}" 
+    ip: "{{ proxmox_net0.ip6.split('/')[0] }}"
     state: "present"
     url: "{{ pihole_instance.name }}"
     password: "{{ pihole_instance.password }}"
