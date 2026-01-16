@@ -11,7 +11,7 @@
         url: "https://your-pihole.example.com"
         password: "{{ pihole_password }}"
 
-    - name: Create test.example.com A record
+    - name: Create test.example.com AAAA record
       sbarbett.pihole.local_aaaa_record:
         host: test.example.com
         ip: 2001:db8::1
