@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.0] - 2026-04-09
+
+### Added
+- New `domains.py` module for managing Pi-hole domains
+- Example playbooks:
+  - `manage-domains.yml` to demonstrate the domains module
+
 ## [1.1.2] - 2025-12-23
 
 ### Changed

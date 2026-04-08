@@ -1,0 +1,17 @@
+---
+- name: Process domains on {{ pihole_instance.name }}
+  sbarbett.pihole.domains:
+    domains: "{{ pihole_domains }}"
+    url: "{{ pihole_instance.name }}"
+    password: "{{ pihole_instance.password }}"
+  when: pihole_domains is defined and pihole_domains | length > 0
+  register: domains_result
+
+- name: Display domains result for {{ pihole_instance.name }}
+  ansible.builtin.debug:
+    msg:
+      - "Domains processed: {{ domains_result.domains | default([]) | length
+          if pihole_domains is defined and pihole_domains | length > 0 else 0 }}"
+      - "Changes made: {{ domains_result.changed | default(false) }}"
+      - "Changed domains: {{ domains_result.domains | selectattr('state', 'in', ['created', 'updated', 'deleted'])
+          | list | length if domains_result.changed else 0 }}"
