@@ -1,7 +1,78 @@
 ---
-- name: Process each record on {{ pihole_instance.name }}
-  ansible.builtin.include_tasks:
-    file: process_record.yml
-  loop: "{{ pihole_records }}"
+- name: Fetch current Pi-hole DNS configuration
+  sbarbett.pihole.pihole_config_fetcher:
+    url: "{{ pihole_instance.name }}"
+    password: "{{ pihole_instance.password }}"
+  register: manage_local_records_config
+  no_log: true
+
+- name: Set current configuration facts
+  ansible.builtin.set_fact:
+    manage_local_records_current_hosts: "{{ manage_local_records_config.hosts_config }}"
+    manage_local_records_current_cnames: "{{ manage_local_records_config.cnames_config }}"
+
+# Decide up front which records actually differ from the live Pi-hole config.
+# The local_*_record modules are idempotent, but each invocation opens its own
+# API session and fetches the current config, so calling them for every declared
+# record would mean one round-trip per record even when nothing changed. We have
+# already fetched the full config once above, so compute the diff locally and
+# only invoke a module for records that genuinely need to change.
+- name: Determine which records need to be applied on {{ pihole_instance.name }}
+  ansible.builtin.set_fact:
+    manage_local_records_to_apply: >-
+      {%- set ns = namespace(out=[]) -%}
+      {%- for record in pihole_records -%}
+        {%- if record.type in ['A', 'AAAA'] -%}
+          {%- set host_entry = manage_local_records_current_hosts[record.name] | default({}) -%}
+          {%- set exists = record.type in host_entry -%}
+          {%- set existing_ip = host_entry[record.type] if exists else '' -%}
+          {%- if (record.state == 'present' and (not exists or existing_ip != record.data))
+                 or (record.state == 'absent' and exists) -%}
+            {%- set _ = ns.out.append(record) -%}
+          {%- endif -%}
+        {%- elif record.type == 'CNAME' -%}
+          {%- set existing_cname = manage_local_records_current_cnames.get(record.name, {}) -%}
+          {%- if (record.state == 'present' and (existing_cname == {}
+                   or existing_cname.target != record.data
+                   or (record.ttl is defined and existing_cname.ttl != record.ttl)
+                   or (record.ttl is not defined and existing_cname.ttl is not none)))
+                 or (record.state == 'absent' and existing_cname != {}) -%}
+            {%- set _ = ns.out.append(record) -%}
+          {%- endif -%}
+        {%- endif -%}
+      {%- endfor -%}
+      {{ ns.out }}
+
+- name: Manage A records on {{ pihole_instance.name }}
+  sbarbett.pihole.local_a_record:
+    host: "{{ item.name }}"
+    ip: "{{ item.data }}"
+    state: "{{ item.state }}"
+    url: "{{ pihole_instance.name }}"
+    password: "{{ pihole_instance.password }}"
+  loop: "{{ manage_local_records_to_apply | selectattr('type', 'equalto', 'A') | list }}"
   loop_control:
-    loop_var: record
+    label: "{{ item.name }} ({{ item.state }})"
+
+- name: Manage AAAA records on {{ pihole_instance.name }}
+  sbarbett.pihole.local_aaaa_record:
+    host: "{{ item.name }}"
+    ip: "{{ item.data }}"
+    state: "{{ item.state }}"
+    url: "{{ pihole_instance.name }}"
+    password: "{{ pihole_instance.password }}"
+  loop: "{{ manage_local_records_to_apply | selectattr('type', 'equalto', 'AAAA') | list }}"
+  loop_control:
+    label: "{{ item.name }} ({{ item.state }})"
+
+- name: Manage CNAME records on {{ pihole_instance.name }}
+  sbarbett.pihole.local_cname:
+    host: "{{ item.name }}"
+    target: "{{ item.data }}"
+    ttl: "{{ item.ttl | default(omit) }}"
+    state: "{{ item.state }}"
+    url: "{{ pihole_instance.name }}"
+    password: "{{ pihole_instance.password }}"
+  loop: "{{ manage_local_records_to_apply | selectattr('type', 'equalto', 'CNAME') | list }}"
+  loop_control:
+    label: "{{ item.name }} ({{ item.state }})"

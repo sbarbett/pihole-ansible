@@ -27,10 +27,15 @@ A list of dictionaries representing the Pi-hole instances you want to manage. Ea
 A list of record definitions. Each record is a dictionary with the following keys:
 
 * `name`: The DNS record name.
-* `type`: The record type. Allowed values are `A` or `CNAME`.
-* `data`: For A records, this is the IP address; for CNAME records, this is the target hostname.
+* `type`: The record type. Allowed values are `A`, `AAAA` or `CNAME`. The value is
+  matched case-sensitively; records of any other type are ignored.
+* `data`: For A and AAAA records, this is the IP address; for CNAME records, this is the target hostname.
 * `state`: Desired state for the record. Allowed values are `present` or `absent`.
-* `ttl`: (Optional, for CNAME records) Time-to-live value (default is 300 seconds).
+* `ttl`: (Optional, for CNAME records) Time-to-live value. When omitted, the record is
+  created without a TTL.
+
+The role fetches the full DNS configuration from each instance once, then only invokes a
+record module for the records that actually differ from what is already configured.
 
 ## Example Playbook
 

@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- `manage_local_records` fetches each instance's DNS configuration once, computes the set of
+  records that differ from it in a single step, and only invokes a record module for those.
+  Records already in the desired state no longer cost an API round-trip. The role reads that
+  configuration through a new internal `pihole_config_fetcher` module, which is an
+  implementation detail rather than a supported interface.
+- Local record processing no longer sleeps 1 second between each record
+
+### Security
+- Added `label` to task loops across all roles so instance credentials are no longer rendered
+  in Ansible output
+
 ## [1.1.2] - 2025-12-23
 
 ### Changed

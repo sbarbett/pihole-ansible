@@ -8,3 +8,4 @@
   loop: "{{ pihole_hosts }}"
   loop_control:
     loop_var: pihole_instance
+    label: "{{ pihole_instance.name }}"
