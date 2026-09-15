@@ -108,9 +108,6 @@ def run_module():
     password = module.params['password']
     url = module.params['url']
 
-    if module.check_mode:
-        module.exit_json(**result)
-
     try:
         client = PiHole6Client(url, password)
         current_config = client.config.get_config_section("dns/cnameRecords")
@@ -138,7 +135,9 @@ def run_module():
         if state == 'present':
             if existing_target is None:
                 # No record exists; add the new CNAME record.
-                if ttl is not None:
+                if module.check_mode:
+                    add_response = None
+                elif ttl is not None:
                     add_response = client.config.add_local_cname(host, target, ttl=ttl)
                 else:
                     add_response = client.config.add_local_cname(host, target)
@@ -146,23 +145,28 @@ def run_module():
                 result['result'] = add_response
             elif existing_target != target or existing_ttl != ttl:
                 # Record exists but with different target or ttl; remove then re-add.
-                if existing_ttl is not None:
-                    remove_response = client.config.remove_local_cname(host, existing_target, ttl=existing_ttl)
+                if not module.check_mode:
+                    if existing_ttl is not None:
+                        remove_response = client.config.remove_local_cname(host, existing_target, ttl=existing_ttl)
+                    else:
+                        remove_response = client.config.remove_local_cname(host, existing_target)
+                    if ttl is not None:
+                        add_response = client.config.add_local_cname(host, target, ttl=ttl)
+                    else:
+                        add_response = client.config.add_local_cname(host, target)
+                    result['result'] = {'removed': remove_response, 'added': add_response}
                 else:
-                    remove_response = client.config.remove_local_cname(host, existing_target)
-                if ttl is not None:
-                    add_response = client.config.add_local_cname(host, target, ttl=ttl)
-                else:
-                    add_response = client.config.add_local_cname(host, target)
+                    result['result'] = None
                 result['changed'] = True
-                result['result'] = {'removed': remove_response, 'added': add_response}
             else:
                 result['changed'] = False
                 result['result'] = {"msg": "CNAME record already exists with the desired target and ttl", "current": current_config}
 
         elif state == 'absent':
             if existing_target is not None:
-                if existing_ttl is not None:
+                if module.check_mode:
+                    remove_response = None
+                elif existing_ttl is not None:
                     remove_response = client.config.remove_local_cname(host, existing_target, ttl=existing_ttl)
                 else:
                     remove_response = client.config.remove_local_cname(host, existing_target)

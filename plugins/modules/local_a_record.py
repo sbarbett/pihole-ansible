@@ -99,9 +99,6 @@ def run_module():
     password = module.params['password']
     url = module.params['url']
 
-    if module.check_mode:
-        module.exit_json(**result)
-
     try:
         client = PiHole6Client(url, password)
         current_config = client.config.get_config_section("dns/hosts")
@@ -119,22 +116,25 @@ def run_module():
         if state == 'present':
             if existing_ip is None:
                 # No record exists; add the new one.
-                add_response = client.config.add_local_a_record(host, ip)
+                add_response = client.config.add_local_a_record(host, ip) if not module.check_mode else None
                 result['changed'] = True
                 result['result'] = add_response
             elif existing_ip != ip:
                 # A record exists but with a different IP; remove it first.
-                remove_response = client.config.remove_local_a_record(host, existing_ip)
-                add_response = client.config.add_local_a_record(host, ip)
+                if not module.check_mode:
+                    remove_response = client.config.remove_local_a_record(host, existing_ip)
+                    add_response = client.config.add_local_a_record(host, ip)
+                    result['result'] = {'removed': remove_response, 'added': add_response}
+                else:
+                    result['result'] = None
                 result['changed'] = True
-                result['result'] = {'removed': remove_response, 'added': add_response}
             else:
                 result['changed'] = False
                 result['result'] = {"msg": "Record already exists with the desired IP", "current": current_config}
 
         elif state == 'absent':
             if existing_ip is not None:
-                remove_response = client.config.remove_local_a_record(host, existing_ip)
+                remove_response = client.config.remove_local_a_record(host, existing_ip) if not module.check_mode else None
                 result['changed'] = True
                 result['result'] = remove_response
             else:

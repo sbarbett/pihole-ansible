@@ -169,12 +169,6 @@ def run_module():
         if missing:
             module.fail_json(msg=f"Missing required arguments for DHCP 'present': {missing}", **result)
 
-    if module.check_mode:
-        # We won't actually apply changes in check mode, but let's guess if anything would change
-        # For a thorough check, we'd need to fetch current config & compare, but let's keep it simple here:
-        result['changed'] = True
-        module.exit_json(**result)
-
     # Connect to Pi-hole
     try:
         client = PiHole6Client(url, password)
@@ -232,7 +226,7 @@ def run_module():
     # If changed, send PATCH
     try:
         payload = {"dhcp": new_dhcp}
-        update_resp = client.config.update_config(payload)
+        update_resp = client.config.update_config(payload) if not module.check_mode else None
         result['changed'] = True
         result['result'] = update_resp
         module.exit_json(**result)

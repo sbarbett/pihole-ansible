@@ -121,9 +121,6 @@ def run_module():
     if not filters:
         module.fail_json(msg="At least one of 'ip', 'name', 'clientid', or 'hwaddr' must be specified.")
 
-    if module.check_mode:
-        module.exit_json(**result)
-
     try:
         client = PiHole6Client(url, password)
 
@@ -144,7 +141,7 @@ def run_module():
         # Remove each matching lease
         responses = []
         for lease in matching_leases:
-            response = client.dhcp.remove_lease(lease["ip"])
+            response = client.dhcp.remove_lease(lease["ip"]) if not module.check_mode else None
             responses.append({"ip": lease["ip"], "response": response})
 
         result['changed'] = True

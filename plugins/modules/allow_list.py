@@ -278,9 +278,6 @@ def run_module():
             'enabled': enabled
         }]
 
-    if module.check_mode:
-        module.exit_json(**result)
-
     if not HAS_PIHOLE6API:
         module.fail_json(msg='The pihole6api module is required')
 
@@ -321,19 +318,18 @@ def run_module():
             if state == 'present':
                 if existing_list_data is None:
                     # No list exists; add the new one
-                    if not module.check_mode:
-                        add_response = lists.add_list(
-                            address, 
-                            list_type=list_type,
-                            comment=comment,
-                            groups=groups,
-                            enabled=enabled
-                        )
-                        processed_results.append({
-                            'address': address,
-                            'action': 'added',
-                            'response': add_response
-                        })
+                    add_response = lists.add_list(
+                        address,
+                        list_type=list_type,
+                        comment=comment,
+                        groups=groups,
+                        enabled=enabled
+                    ) if not module.check_mode else None
+                    processed_results.append({
+                        'address': address,
+                        'action': 'added',
+                        'response': add_response
+                    })
                     result['changed'] = True
                 else:
                     # List exists, check if we need to update it
@@ -346,19 +342,18 @@ def run_module():
                         needs_update = True
                     
                     if needs_update:
-                        if not module.check_mode:
-                            update_response = lists.update_list(
-                                address,
-                                list_type=list_type,
-                                comment=comment,
-                                groups=groups,
-                                enabled=enabled
-                            )
-                            processed_results.append({
-                                'address': address,
-                                'action': 'updated',
-                                'response': update_response
-                            })
+                        update_response = lists.update_list(
+                            address,
+                            list_type=list_type,
+                            comment=comment,
+                            groups=groups,
+                            enabled=enabled
+                        ) if not module.check_mode else None
+                        processed_results.append({
+                            'address': address,
+                            'action': 'updated',
+                            'response': update_response
+                        })
                         result['changed'] = True
                     else:
                         processed_results.append({
@@ -383,18 +378,17 @@ def run_module():
         
         # Process deletions
         if lists_to_delete:
-            if not module.check_mode:
-                # TODO: If batch_delete_lists is available in the API, use it here
-                # For now, delete one by one
-                for address in lists_to_delete:
-                    delete_response = lists.delete_list(address, list_type=list_type)
-                    # Update the corresponding result in processed_results
-                    for item in processed_results:
-                        if item['address'] == address and item['action'] == 'marked_for_deletion':
-                            item['action'] = 'deleted'
-                            item['response'] = delete_response
+            # TODO: If batch_delete_lists is available in the API, use it here
+            # For now, delete one by one
+            for address in lists_to_delete:
+                delete_response = lists.delete_list(address, list_type=list_type) if not module.check_mode else None
+                # Update the corresponding result in processed_results
+                for item in processed_results:
+                    if item['address'] == address and item['action'] == 'marked_for_deletion':
+                        item['action'] = 'deleted'
+                        item['response'] = delete_response
 
-        if update_gravity:
+        if update_gravity and not module.check_mode:
             client.connection.connection_timeout = 60  # Set a timeout for the gravity run
             res = client.actions.run_gravity()
             if "List has been updated" in res:

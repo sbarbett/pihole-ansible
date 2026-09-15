@@ -83,9 +83,6 @@ def run_module():
     password = module.params['password']
     url = module.params['url']
 
-    if module.check_mode:
-        module.exit_json(**result)
-
     try:
         client = PiHole6Client(url, password)
 
@@ -100,7 +97,7 @@ def run_module():
         else:
             # Change listening mode
             new_config = {"dns": {"listeningMode": mode}}
-            response = client.config.update_config(new_config)
+            response = client.config.update_config(new_config) if not module.check_mode else None
             result['changed'] = True
             result['result'] = response
 
